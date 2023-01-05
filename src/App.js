@@ -1,24 +1,32 @@
-import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
+import Tourmain from './components/Tourmain';
+const url = `https://course-api.com/react-tours-project`
 
 function App() {
+  const [users,setuser] = useState([])
+
+  function deleteuser(id){
+    const deleteone = users.filter((user)=> user.id !== id);
+    setuser(deleteone)
+   }
+
+  const getuser = async ()=>{
+    const responce = await fetch(url);
+    const users = await responce.json();
+    setuser(users)
+  };
+  useEffect(()=>{
+    getuser();
+  },[])
+
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <main>
+    <Tourmain tours={users} deleteuser={deleteuser}/>
+    </main>
   );
 }
 
